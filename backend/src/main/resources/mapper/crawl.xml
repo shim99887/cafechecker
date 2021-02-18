@@ -6,11 +6,10 @@
 	<insert id="writeList" parameterType="CafeDto">
 		INSERT INTO cafereplay (no, title, writer, img, file) VALUES (#{no}, #{title}, #{writer}, #{isImg}, #{isFile}) ON DUPLICATE KEY UPDATE title=#{title}, writer=#{writer}, img=#{isImg}, file=#{isFile};
 	</insert>
-	<select id="getLength" resultType="int">
-		select count(*) from cafereplay
-	</select>
-	<select id="getAllList" resultType="CafeDto">
+	<select id="getAllList" parameterType="int" resultType="CafeDto">
 		select * from cafereplay
+		order by no desc
+		limit #{page}, 10
 	</select>
 	<update id="truncTable">
 		truncate table cafereplay
@@ -26,5 +25,8 @@
 	<select id="getImageError" resultType="CafeDto">
 		select * from cafereplay
 		where img = 0
+	</select>
+	<select id="getLength" resultType="int">
+		select count(*) as cnt from cafereplay
 	</select>
 </mapper>

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -123,12 +124,21 @@ public class CrawlingController {
 		return new ResponseEntity<Boolean>(HttpStatus.ACCEPTED);
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<CafeDto>> getAllList(@RequestBody Pagination pages){
-		List<CafeDto> list = service.getAllList();
+	@GetMapping("/{page}")
+	public ResponseEntity<List<CafeDto>> getAllList(@PathVariable int page){
+		List<CafeDto> list = service.getAllList(page);
 		
 		System.out.println(list);
 		
 		return new ResponseEntity<List<CafeDto>>(list, HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/list/size")
+	public ResponseEntity<Integer> getSize(){
+		int size = service.getLength();
+		
+		System.out.println(size);
+		
+		return new ResponseEntity<Integer>(size, HttpStatus.OK);
 	}
 }

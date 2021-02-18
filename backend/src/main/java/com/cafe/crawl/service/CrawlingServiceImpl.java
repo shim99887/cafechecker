@@ -16,9 +16,9 @@ public class CrawlingServiceImpl implements CrawlingService{
 	private CrawlingMapper dao;
 	
 	@Override
-	public Pagination pages() {
-		
-		return null;
+	public int getLength() {
+		// TODO Auto-generated method stub
+		return dao.getLength();
 	}
 	
 	@Override
@@ -30,9 +30,9 @@ public class CrawlingServiceImpl implements CrawlingService{
 	}
 	
 	@Override
-	public List<CafeDto> getAllList() {
-		System.out.println(dao.getLength());
-		return dao.getAllList();
+	public List<CafeDto> getAllList(int page) {
+		page = (page-1)*10;
+		return dao.getAllList(page);
 	}
 	
 	@Override

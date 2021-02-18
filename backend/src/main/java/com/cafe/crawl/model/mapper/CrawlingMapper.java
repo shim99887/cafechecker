@@ -11,7 +11,7 @@ public interface CrawlingMapper {
 	
 	public void writeList(CafeDto dto);
 	
-	public List<CafeDto> getAllList();
+	public List<CafeDto> getAllList(int page);
 	
 	public void truncTable();
 	
