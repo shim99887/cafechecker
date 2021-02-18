@@ -49,6 +49,8 @@
           >말머리 오류</a
         >
       </li>
+      <v-spacer />
+      <v-btn secondary outlined @click="refreshBoard">글 목록 새로고침</v-btn>
     </ul>
     <div class="tab-content" id="pills-tabContent">
       <div
@@ -91,13 +93,36 @@ import GetList from "./GetList.vue";
 import GetFileList from "./GetFileList.vue";
 import GetImageList from "./GetImageList.vue";
 import GetTitleList from "./GetTitleList.vue";
+import axios from "axios";
+const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 
 export default {
   components: {
     GetList,
     GetFileList,
     GetImageList,
-    GetTitleList
-  }
+    GetTitleList,
+  },
+  methods: {
+    refreshBoard() {
+      let config = {
+      onUploadProgress: progressEvent => {
+        let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+        // do whatever you like with the percentage complete
+        // maybe dispatch an action that will update a progress bar or something
+        console.log(percentCompleted);
+      }
+}
+      axios
+        .post(`${SERVER_URL}/crawl/insert`, config)
+        .then((response) => {
+          console.log(response);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
 };
 </script>

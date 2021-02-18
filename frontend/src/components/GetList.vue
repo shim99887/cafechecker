@@ -52,7 +52,7 @@ export default {
   created() {
     console.log("created");
     axios.get(`${SERVER_URL}/crawl/list/size`).then((response) => {
-      this.maxPage = response.data / 10 + 1;
+      this.maxPage = Math.floor(response.data / 10 + 1);
       console.log(this.maxPage);
     });
 
