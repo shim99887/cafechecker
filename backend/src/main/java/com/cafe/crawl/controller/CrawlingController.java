@@ -1,5 +1,6 @@
 package com.cafe.crawl.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +42,15 @@ public class CrawlingController {
 					+ pageNo;
 			int cnt = 0;
 			Document doc = new Document(url);
+			
+			try {
+				doc = Jsoup.connect(url).timeout(30000).get();
+			}catch(IOException e) {
+				System.out.println(e.getMessage());
+			}
 
-			doc = Jsoup.connect(url).get();
-
+			System.out.println(doc);
+			
 			Element sel = doc.select("html body div").get(0);
 
 			sel = sel.select("div#main-area div.article-board").get(1);
