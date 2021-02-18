@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- <table class="table">
+    <table class="table">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -19,24 +19,22 @@
           <td>{{ item.file }}</td>
         </tr>
       </tbody>
-    </table> -->
-    <nav aria-label="...">
-      <ul class="pagination">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active">
-          <a class="page-link" href="/list/2"
-            >2 <span class="sr-only">(current)</span></a
-          >
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
+    </table>
+    <v-container>
+      <v-row justify="center">
+        <v-col cols="8">
+          <v-container class="max-width">
+            <v-pagination
+              v-model="page"
+              class="my-4"
+              :length="maxPage"
+              :total-visible="7"
+              @input="next"
+            ></v-pagination>
+          </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 <script>
@@ -47,16 +45,29 @@ export default {
   data() {
     return {
       datas: [],
+      maxPage: 0,
+      page: 1,
     };
   },
   created() {
-    axios
-      .get(`${SERVER_URL}/crawl`, {
-        data: {},
-      })
-      .then((response) => {
+    console.log("created");
+    axios.get(`${SERVER_URL}/crawl/list/size`).then((response) => {
+      this.maxPage = response.data / 10 + 1;
+      console.log(this.maxPage);
+    });
+
+    axios.get(`${SERVER_URL}/crawl/` + this.page).then((response) => {
+      this.datas = response.data;
+    });
+  },
+  methods: {
+    next(page) {
+      this.page = page;
+      axios.get(`${SERVER_URL}/crawl/` + this.page).then((response) => {
         this.datas = response.data;
       });
+    },
   },
 };
 </script>
+<style lang="css"></style>
