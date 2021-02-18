@@ -58,6 +58,7 @@ export default {
 
     axios.get(`${SERVER_URL}/crawl/` + this.page).then((response) => {
       this.datas = response.data;
+	console.log(this.datas);
     });
   },
   methods: {
