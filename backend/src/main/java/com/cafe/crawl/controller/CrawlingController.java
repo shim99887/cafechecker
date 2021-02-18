@@ -49,7 +49,6 @@ public class CrawlingController {
 				System.out.println(e.getMessage());
 			}
 
-			System.out.println(doc);
 			
 			Element sel = doc.select("html body div").get(0);
 
