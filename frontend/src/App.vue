@@ -7,7 +7,7 @@
 <script>
 import AppBar from './components/AppBar.vue';
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     AppBar,
@@ -15,6 +15,6 @@ export default {
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <v-row align="center" class="">
-      <v-spacer/>
+      <v-spacer />
       <v-col cols="2">
         <v-select
           :items="selectItems"
@@ -18,10 +18,13 @@
         <v-btn secondary outlined @click="search">검색</v-btn>
       </v-col>
     </v-row>
-    <table class="table">
+    <v-row justify="center">
+
+    <table class="center table table-striped custab">
       <thead>
         <tr>
-          <th scope="col">#</th>
+          <th scope="col"></th>
+          <th class="text-center" scope="col">#</th>
           <th scope="col">title</th>
           <th scope="col">writer</th>
           <th scope="col">img</th>
@@ -29,8 +32,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in datas.slice((page-1)*10, page*10)" :key="index">
-          <th scope="row">{{ item.no }}</th>
+        <tr
+          style="height:10px;"
+          v-for="(item, index) in datas.slice((page - 1) * 10, page * 10)"
+          :key="index"
+        >
+          <td class="p-0 text-center">
+            <v-checkbox
+              v-model="checked"
+              style="margin-bottom:0px;"
+              :value="item.no"
+            />
+          </td>
+          <th
+            style=" display:flex; align-items:center; justify-content:center;"
+            scope="row"
+          >
+            {{ item.no }}
+          </th>
           <td>{{ item.title }}</td>
           <td>{{ item.writer }}</td>
           <td>{{ item.img }}</td>
@@ -38,6 +57,7 @@
         </tr>
       </tbody>
     </table>
+    </v-row>
     <v-container>
       <v-row justify="center">
         <v-col cols="8">
@@ -67,37 +87,53 @@ export default {
       selected: "제목",
       page: 1,
       selectItems: ["제목", "닉네임"],
-      content:'',
+      content: "",
+      checked: [],
     };
   },
   created() {
-    console.log("created");
     axios.get(`${SERVER_URL}/crawl/list`).then((response) => {
       this.datas = response.data;
       this.maxPage = Math.floor(this.datas.length / 10 + 1);
-      console.log(this.maxPage);
     });
   },
   methods: {
     next(page) {
       this.page = page;
-      // axios.get(`${SERVER_URL}/crawl/` + this.page).then((response) => {
-      //   this.datas = response.data;
-      // });
+      this.checked = [];
     },
-    search(){
+    search() {
       const params = new URLSearchParams();
-      params.append('type', this.selected);
-      params.append('content', this.content);
+      params.append("type", this.selected);
+      params.append("content", this.content);
 
-      axios.get(`${SERVER_URL}/crawl`, {params})
-      .then(response => {
+      axios.get(`${SERVER_URL}/crawl`, { params }).then((response) => {
         this.datas = response.data;
         this.maxPage = Math.floor(this.datas.length / 10 + 1);
         this.page = 1;
-      })
-    }
+      });
+    },
   },
 };
 </script>
-<style lang="css"></style>
+<style lang="css">
+.custab {
+  border: 1px solid #ccc;
+  padding: 5px;
+  box-shadow: 3px 3px 2px #ccc;
+  transition: 0.5s;
+}
+.custab:hover {
+  box-shadow: 3px 3px 0px transparent;
+  transition: 0.5s;
+}
+table{
+  align-items: center;
+  justify-content: center;
+}
+.v-input__slot {
+  align-items: center;
+  justify-content: center;
+  margin-bottom : 0px !important;
+}
+</style>

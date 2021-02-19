@@ -50,7 +50,12 @@
         >
       </li>
       <v-spacer />
-      <v-btn secondary outlined @click="refreshBoard">글 목록 새로고침</v-btn>
+      <li class="nav-item">
+        <login-modal />
+      </li>
+      <li class="nav-item">
+        <v-btn secondary outlined @click="refreshBoard" class="ml-2">글 목록 새로고침</v-btn>
+      </li>
     </ul>
     <div class="tab-content" id="pills-tabContent">
       <div
@@ -93,6 +98,8 @@ import GetList from "./GetList.vue";
 import GetFileList from "./GetFileList.vue";
 import GetImageList from "./GetImageList.vue";
 import GetTitleList from "./GetTitleList.vue";
+import LoginModal from "./LoginModal.vue";
+import { mapGetters } from "vuex";
 import axios from "axios";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 
@@ -102,17 +109,28 @@ export default {
     GetFileList,
     GetImageList,
     GetTitleList,
+    LoginModal,
   },
+  computed: {
+    ...mapGetters([
+      "getAccessToken",
+      "getUserId",
+      "getUserName",
+    ]),
+  },
+
   methods: {
     refreshBoard() {
       let config = {
-      onUploadProgress: progressEvent => {
-        let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
-        // do whatever you like with the percentage complete
-        // maybe dispatch an action that will update a progress bar or something
-        console.log(percentCompleted);
-      }
-}
+        onUploadProgress: (progressEvent) => {
+          let percentCompleted = Math.floor(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          // do whatever you like with the percentage complete
+          // maybe dispatch an action that will update a progress bar or something
+          console.log(percentCompleted);
+        },
+      };
       axios
         .post(`${SERVER_URL}/crawl/insert`, config)
         .then((response) => {

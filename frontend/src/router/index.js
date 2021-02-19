@@ -6,10 +6,10 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/list/:page',
-    name: 'list',
-    component: GetList,
-  },
+    path: "/list/:page",
+    name: "list",
+    component: GetList
+  }
 ];
 
 const router = new VueRouter({
