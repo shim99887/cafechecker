@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe.crawl.model.CafeDto;
@@ -130,13 +131,20 @@ public class CrawlingController {
 		return new ResponseEntity<Boolean>(HttpStatus.ACCEPTED);
 	}
 	
-	@GetMapping("/{page}")
-	public ResponseEntity<List<CafeDto>> getAllList(@PathVariable int page){
-		List<CafeDto> list = service.getAllList(page);
-		
-		System.out.println(list);
+	@GetMapping("/list")
+	public ResponseEntity<List<CafeDto>> getAllList(){
+		List<CafeDto> list = service.getAllList();
 		
 		return new ResponseEntity<List<CafeDto>>(list, HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CafeDto>> getSearchedList(@RequestParam String type, @RequestParam String content){
+		System.out.println(type + " " + content);
+		
+		List<CafeDto> list = service.getSearchedList(type, content);
+		
+		return new ResponseEntity<List<CafeDto>>(list, HttpStatus.OK);
 	}
 	
 	@GetMapping("/list/size")

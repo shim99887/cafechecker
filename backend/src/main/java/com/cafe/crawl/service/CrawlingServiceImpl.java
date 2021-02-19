@@ -30,9 +30,17 @@ public class CrawlingServiceImpl implements CrawlingService{
 	}
 	
 	@Override
-	public List<CafeDto> getAllList(int page) {
-		page = (page-1)*10;
-		return dao.getAllList(page);
+	public List<CafeDto> getSearchedList(String type, String content) {
+		if(type.equals("제목")) {
+			return dao.getTitleList(content);
+		}else {
+			return dao.getNickList(content);
+		}
+	}
+	
+	@Override
+	public List<CafeDto> getAllList() {
+		return dao.getAllList();
 	}
 	
 	@Override
